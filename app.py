@@ -6,8 +6,8 @@ import subprocess
 
 app = Flask(__name__)
 
-# Lấy SECRET_KEY từ biến môi trường
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-secret-key')  # Dùng giá trị mặc định nếu không tìm thấy biến môi trường
+# Lấy BASE_URL từ biến môi trường
+BASE_URL = os.getenv('BASE_URL', 'http://127.0.0.1:5000')  # Dùng giá trị mặc định nếu không tìm thấy biến môi trường
 
 STATIC_FOLDER = 'static/uploads'
 
@@ -39,7 +39,7 @@ def convert_from_url():
         subprocess.run(command, check=True)
         return jsonify({
             "message": "Video converted to MP3 successfully",
-            "output_url": f"http://127.0.0.1:5000/static/uploads/{output_filename}"
+            "output_url": f"{BASE_URL}/static/uploads/{output_filename}"  # Sử dụng BASE_URL từ biến môi trường
         }), 200
     except subprocess.CalledProcessError:
         return jsonify({"error": "Failed to convert video to MP3"}), 500
