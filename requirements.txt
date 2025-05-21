@@ -1,2 +1,4 @@
-flask
+Flask
 requests
+ffmpeg-python
+python-dotenv
