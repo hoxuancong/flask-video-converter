@@ -6,8 +6,8 @@ import subprocess
 
 app = Flask(__name__)
 
-# Lấy BASE_URL từ biến môi trường
-BASE_URL = os.getenv('BASE_URL', 'http://127.0.0.1:5000')  # Dùng giá trị mặc định nếu không tìm thấy biến môi trường
+# Lấy tên miền từ biến môi trường (hoặc sử dụng giá trị mặc định nếu không có)
+BASE_URL = os.getenv('BASE_URL', 'http://127.0.0.1:5000')  # Sử dụng BASE_URL từ môi trường nếu có
 
 STATIC_FOLDER = 'static/uploads'
 
@@ -39,7 +39,7 @@ def convert_from_url():
         subprocess.run(command, check=True)
         return jsonify({
             "message": "Video converted to MP3 successfully",
-            "output_url": f"{BASE_URL}/static/uploads/{output_filename}"  # Sử dụng BASE_URL từ biến môi trường
+            "output_url": f"{BASE_URL}/static/uploads/{output_filename}"  # Sử dụng BASE_URL từ môi trường
         }), 200
     except subprocess.CalledProcessError:
         return jsonify({"error": "Failed to convert video to MP3"}), 500
@@ -47,4 +47,5 @@ def convert_from_url():
         os.remove(input_path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Flask sẽ lắng nghe trên tất cả các địa chỉ IP và cổng 5000
+    app.run(debug=True, host='0.0.0.0', port=5000)
