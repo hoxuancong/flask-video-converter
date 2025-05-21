@@ -1,10 +1,13 @@
-import uuid
 import os
+import uuid
 import requests
 from flask import Flask, request, jsonify
 import subprocess
 
 app = Flask(__name__)
+
+# Lấy SECRET_KEY từ biến môi trường
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-secret-key')  # Dùng giá trị mặc định nếu không tìm thấy biến môi trường
 
 STATIC_FOLDER = 'static/uploads'
 
